@@ -1,31 +1,30 @@
 import { marked } from "marked";
 
+import promptPrefix from "./prompt.txt"
+
 export async function onRequest(context) {
     const { request } = context;
     const url = new URL(request.url);
     const query = url.searchParams.get("query");
-
-    // Check if the query exists
-    if (!query) {
-        return new Response(
-            `<html><body><h1>Error</h1><p>No query provided. Please add a 'query' parameter to the URL.</p></body></html>`,
-            { headers: { "Content-Type": "text/html" } }
-        );
-    }
-
-    // Embed query into a prompt for ChatGPT
-    const prompt = `Translate the following Japanese sentence and explain its meaning in English: ${query}`;
-
-    // Call OpenAI's API
-    const apiKey = context.env.OPENAI_API_KEY; // Set in your Cloudflare environment variables
-    const apiUrl = "https://api.openai.com/v1/chat/completions";
-
-    const body = JSON.stringify({
-        model: "gpt-4o-mini",
-        messages: [{ role: "user", content: prompt }],
-    });
+	const secret = url.searchParams.get("secret");
 
     try {
+        // Check if the query exists
+        if (!query) throw new Error("Missing query parameter");
+		if (secret != context.env.SECRET) throw new Error("Invalid secret");
+
+        // Embed query into a prompt for ChatGPT
+        const prompt = promptPrefix + query;
+
+        // Call OpenAI's API
+        const apiKey = context.env.OPENAI_API_KEY; // Set in your Cloudflare environment variables
+        const apiUrl = "https://api.openai.com/v1/chat/completions";
+
+        const body = JSON.stringify({
+            model: "gpt-4o-mini",
+            messages: [{ role: "user", content: prompt }],
+        });
+
         const response = await fetch(apiUrl, {
             method: "POST",
             headers: {
@@ -44,7 +43,7 @@ export async function onRequest(context) {
             data.choices[0]?.message?.content || "No response from API.";
 
         const encodedPrompt = encodeURIComponent(prompt);
-        const chatGPTLink = `https://chat.openai.com/?prompt=${encodedPrompt}`;
+        const chatGPTLink = `https://chat.openai.com/?q=${encodedPrompt}`;
 
         // QR Code API (Google Chart API)
         const qrCodeLink = `https://quickchart.io/chart?cht=qr&chs=200x200&chl=${encodeURIComponent(
