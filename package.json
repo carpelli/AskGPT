@@ -11,5 +11,8 @@
   "description": "",
   "dependencies": {
     "marked": "^15.0.4"
+  },
+  "devDependencies": {
+    "esbuild": "^0.24.0"
   }
 }
