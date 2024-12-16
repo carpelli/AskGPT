@@ -48,7 +48,7 @@ export async function onRequest(context) {
         const chatGPTLink = `https://chat.openai.com/?q=${encodedPrompt}`;
 
         // QR Code API (Google Chart API)
-        const qrCodeLink = `https://quickchart.io/chart?cht=qr&chs=200x200&chl=${encodeURIComponent(
+        const qrCodeLink = `https://quickchart.io/chart?cht=qr&chs=300x300&chl=${encodeURIComponent(
             chatGPTLink
         )}`;
 
