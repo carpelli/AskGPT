@@ -23,7 +23,7 @@ export async function onRequest(context) {
         const body = JSON.stringify({
             model: "gpt-4o-mini",
             messages: [{ role: "user", content: prompt }],
-			temperature: 0.2
+			temperature: 0.3
         });
 
         const response = await fetch(apiUrl, {
