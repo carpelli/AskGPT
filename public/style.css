@@ -7,7 +7,7 @@ body {
     height: 100vh;
 }
 .prompt {
-    font-size: 1.2em;
+    font-size: 1.4em;
     font-weight: bold;
     color: #555;
     border: 1px solid #555;
@@ -18,7 +18,7 @@ body {
     word-wrap: break-word;
 }
 .response {
-    font-size: 1.4em;
+    font-size: 1.6em;
     line-height: 1.6;
     color: #222;
 }

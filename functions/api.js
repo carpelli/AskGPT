@@ -11,7 +11,7 @@ export async function onRequest(context) {
     try {
         // Check if the query exists
         if (!query) throw new Error("Missing query parameter");
-		if (secret != context.env.SECRET) throw new Error("Invalid secret");
+		if (secret != context.env.SECRET) throw new Error("You're not allowed in. Scram!");
 
         // Embed query into a prompt for ChatGPT
         const prompt = promptPrefix + query;
