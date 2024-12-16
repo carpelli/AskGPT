@@ -42,7 +42,8 @@ export async function onRequest(context) {
         const answer =
             data.choices[0]?.message?.content || "No response from API.";
 
-        const encodedPrompt = encodeURIComponent(prompt);
+		const linkPrompt = "I am a Japanese learner around the N2 level, I would like to ask some questions about the following passage from a book: " + query
+        const encodedPrompt = encodeURIComponent(linkPrompt);
         const chatGPTLink = `https://chat.openai.com/?q=${encodedPrompt}`;
 
         // QR Code API (Google Chart API)
@@ -54,13 +55,12 @@ export async function onRequest(context) {
         const htmlResponse = `
 			<html>
 			<head>
-				<title>ChatGPT Prompt</title>
+				<title>Ask GPT</title>
+				<link rel="stylesheet" href="/style.css" />
 			</head>
 			<body>
-				<h1>Your ChatGPT Prompt</h1>
-				<p><strong>Prompt:</strong> ${query}</p>
-				<p>${marked(answer)}</p>
-				<h2>QR Code</h2>
+				<div class="prompt">${query}</div>
+				<div class="response">${marked(answer)}</div>
 				<img src="${qrCodeLink}" alt="QR Code to ChatGPT" />
 			</body>
 			</html>
